@@ -1,9 +1,8 @@
 ---
 title: GraphQL Server Setup Issues
 date: "2018-12-22T07:34:44.933Z"
+spoiler: "Whoops, There is no best structure, but you have to make it scalable."
 ---
-
-# Problem Encountered
 
 ## GraphQL folder structure
 

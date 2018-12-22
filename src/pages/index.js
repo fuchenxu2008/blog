@@ -5,6 +5,7 @@ import Bio from '../components/bio'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
 import { rhythm } from '../utils/typography'
+import { formatReadingTime } from '../utils/helpers'
 
 class BlogIndex extends React.Component {
   render() {
@@ -29,8 +30,11 @@ class BlogIndex extends React.Component {
                   {title}
                 </Link>
               </h3>
-              <small>{node.frontmatter.date}</small>
-              <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
+              <small>
+                {node.frontmatter.date}
+                {` • ${formatReadingTime(node.timeToRead)}`}
+              </small>
+              <p dangerouslySetInnerHTML={{ __html: node.frontmatter.spoiler || node.excerpt }} />
             </div>
           )
         })}
@@ -55,9 +59,11 @@ export const pageQuery = graphql`
           fields {
             slug
           }
+          timeToRead
           frontmatter {
             date(formatString: "MMMM DD, YYYY")
             title
+            spoiler
           }
         }
       }
