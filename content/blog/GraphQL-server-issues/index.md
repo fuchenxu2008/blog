@@ -1,6 +1,6 @@
 ---
-title: Hi I'm Steve
-date: "2018-12-22T07:11:44.933Z"
+title: GraphQL Server Setup Issues
+date: "2018-12-22T07:34:44.933Z"
 ---
 
 # Problem Encountered
@@ -25,7 +25,7 @@ Defining `_id` as `String` explicitly can seem easy, but it requires `default` v
 
 To circumvent the error `ID cannot represent value: { _bsontype: \"ObjectID\"}` caused by having to define `_id` field as `ID` or `String` where it should be `ObjectId` in MongoDB, just define it as `String`, and add the following snippet to `app.js` to **override** the default behavior of Mongoose.
 
-``` Javascript
+``` javascript{2-3}
 const { ObjectId } = mongoose.Types;
 ObjectId.prototype.valueOf = function () {
   return this.toString();
@@ -36,7 +36,7 @@ ObjectId.prototype.valueOf = function () {
 
 When coding the **top-level** Query resolvers, which is **Root Resolvers**, the ***first*** argument should be `undefined`. Can note it as `_` or `root` (whatever).
 
-``` Javascript
+``` javascript
 Query: {
     getLevel: async (_, param) => await LevelModel.findOne(param)
 },
@@ -44,7 +44,7 @@ Query: {
 
 And when querying **subdocuments**, which is nested query, the ***first*** argument will be result obtained from **parent** query.
 
-``` Javascript
+``` javascript
 Level: {
     recipe: async (level) => await RecipeModel.findById(level.recipe)
 }
@@ -54,7 +54,7 @@ Level: {
 
 `makeExecutableSchema` can combine arrays of `typeDefs` and `resolvers` to create a schema, which can be later used in `ApolloServer` creation.
 
-``` Javascript
+``` javascript
 const schema = makeExecutableSchema({
     typeDefs: [Root, LevelType],
     resolvers: [resolvers, LevelResolvers],
